@@ -29,17 +29,17 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   }, 
-  hooks: {
-    beforeCreate: function(createdUser, options, cb) {
-      // hash the password
-      var hash = bcrypt.hashSync(createdUser.password, 10);
-      // store the hash as the user's password
-      createdUser.password = hash;
-      // continue to save the user, with no errors
-      cb(null, createdUser);
-    }
-  },
   {
+    hooks: {
+      beforeCreate: function(createdUser, options, cb) {
+      // hash the password
+        var hash = bcrypt.hashSync(createdUser.password, 10);
+      // store the hash as the user's password
+        createdUser.password = hash;
+      // continue to save the user, with no errors
+        cb(null, createdUser);
+      }
+    },
     classMethods: {
       associate: function(models) {
         models.user.hasMany(models.comic);
