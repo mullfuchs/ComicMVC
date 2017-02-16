@@ -2,6 +2,10 @@ var express = require('express');
 var ejsLayouts = require('express-ejs-layouts');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var passport = require('./config/ppConfig');
+
+
+
 var app = express();
 
 
@@ -16,6 +20,10 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+
+// initialize the passport configuration and session as middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', function(req, res) {
   res.render('index');

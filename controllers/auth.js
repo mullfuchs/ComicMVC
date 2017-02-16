@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../models');
+var passport = require('../config/ppConfig');
 
 router.get('/signup', function(req, res) {
   res.render('auth/signup');
@@ -20,6 +21,9 @@ router.post('/signup', function(req, res) {
     }
   }).spread(function(user, created) {
     if (created) {
+      //  passport.authenticate('local', {
+      //   successRedirect: '/'
+      // })(req, res);
       // if created, success and redirect home
       console.log('User created!');
       res.redirect('/');
@@ -35,6 +39,18 @@ router.post('/signup', function(req, res) {
   });
 
   //res.send(req.body);
+});
+
+
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/auth/login'
+}));
+
+router.get('/logout', function(req, res) {
+  req.logout();
+  console.log('logged out');
+  res.redirect('/');
 });
 
 
