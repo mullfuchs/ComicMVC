@@ -22,19 +22,20 @@ router.post('/signup', function(req, res) {
   }).spread(function(user, created) {
     if (created) {
        passport.authenticate('local', {
-        successRedirect: '/'
+        successRedirect: '/',
+        successFlash: 'Account created and logged in'
       })(req, res);
       // if created, success and redirect home
       // console.log('User created!');
       // res.redirect('/');
     } else {
       // if not created, the email already exists
-      console.log('Email already exists');
+       req.flash('error', 'Email already exists');
       res.redirect('/auth/signup');
     }
   }).catch(function(error) {
     // if an error occurs, let's see what the error is
-    console.log('An error occurred: ', error.message);
+    req.flash('error', error.message);
     res.redirect('/auth/signup');
   });
 
@@ -44,12 +45,14 @@ router.post('/signup', function(req, res) {
 
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
-  failureRedirect: '/auth/login'
+  failureRedirect: '/auth/login',
+  failureFlash: 'Invalid username and/or password',
+  successFlash: 'You have logged in'
 }));
 
 router.get('/logout', function(req, res) {
   req.logout();
-  console.log('logged out');
+  req.flash('success', 'You have logged out');
   res.redirect('/');
 });
 

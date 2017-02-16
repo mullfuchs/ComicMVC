@@ -4,8 +4,9 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('./config/ppConfig');
 
+var isLoggedIn = require('./middleware/isLoggedIn');
 
-
+var flash = require('connect-flash');
 var app = express();
 
 
@@ -21,19 +22,31 @@ app.use(session({
   saveUninitialized: true
 }));
 
+app.use(flash());
+
 // initialize the passport configuration and session as middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(function(req, res, next) {
+  // before every route, attach the flash messages and current user to res.locals
+  res.locals.alerts = req.flash();
+  res.locals.currentUser = req.user;
+  next();
+});
+
 
 app.get('/', function(req, res) {
   res.render('index');
 });
 
-app.get('/profile', function(req, res) {
+app.get('/profile', isLoggedIn, function(req, res) {
   res.render('profile');
 });
 
 app.use('/auth', require('./controllers/auth'));
+
+
 
 var server = app.listen(process.env.PORT || 3000);
 
