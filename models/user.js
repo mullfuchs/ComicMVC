@@ -44,6 +44,16 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         models.user.hasMany(models.comic);
       }
+    },
+    instanceMethods: {
+      validPassword: function(password) {
+        return bcrypt.compareSync(password, this.password);
+      },
+      toJSON: function(){
+        var jsonUser = this.get();
+        delete jsonUser.password;
+        return jsonUser;
+      }
     }
   });
   return user;

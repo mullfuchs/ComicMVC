@@ -21,12 +21,12 @@ router.post('/signup', function(req, res) {
     }
   }).spread(function(user, created) {
     if (created) {
-      //  passport.authenticate('local', {
-      //   successRedirect: '/'
-      // })(req, res);
+       passport.authenticate('local', {
+        successRedirect: '/'
+      })(req, res);
       // if created, success and redirect home
-      console.log('User created!');
-      res.redirect('/');
+      // console.log('User created!');
+      // res.redirect('/');
     } else {
       // if not created, the email already exists
       console.log('Email already exists');
