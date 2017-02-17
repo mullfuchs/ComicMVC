@@ -44,6 +44,10 @@ app.get('/profile', isLoggedIn, function(req, res) {
   res.render('profile');
 });
 
+app.get('/newcomic', isLoggedIn, function(req, res){
+  res.render('post');
+});
+
 app.use('/auth', require('./controllers/auth'));
 
 
