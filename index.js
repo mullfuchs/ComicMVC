@@ -3,7 +3,7 @@ var ejsLayouts = require('express-ejs-layouts');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('./config/ppConfig');
-
+var db = require('./models');
 var isLoggedIn = require('./middleware/isLoggedIn');
 
 var flash = require('connect-flash');
@@ -48,7 +48,7 @@ app.get('/newcomic', isLoggedIn, function(req, res){
   res.render('post');
 });
 
-router.post('/newcomic', function(req, res) {
+app.post('/newcomic', function(req, res) {
   // try sending back the form data
   db.comic.create({
     title: req.body.comicTitle,
