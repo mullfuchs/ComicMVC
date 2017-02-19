@@ -48,6 +48,19 @@ app.get('/newcomic', isLoggedIn, function(req, res){
   res.render('post');
 });
 
+router.post('/newcomic', function(req, res) {
+  // try sending back the form data
+  db.comic.create({
+    title: req.body.comicTitle,
+    content: req.body.comicBlog,
+    imageSource: req.body.comicLink
+  }).then(function(data){
+    res.render('index');
+  });
+
+  //res.send(req.body);
+});
+
 app.use('/auth', require('./controllers/auth'));
 
 
