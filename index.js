@@ -63,7 +63,7 @@ app.post('/newcomic', function(req, res) {
 
 app.use('/auth', require('./controllers/auth'));
 
-
+app.use(express.static(path.join(__dirname, 'public')));
 
 var server = app.listen(process.env.PORT || 3000);
 
